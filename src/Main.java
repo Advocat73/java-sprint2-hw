@@ -4,10 +4,10 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        ArrayList<Transaction> monthTransactions = new ArrayList<>(); // Здесь хранятся данные о месяцах. Один элемент списка - один месяц
-        ArrayList<Transaction> yearTransactions = new ArrayList<>(); // Здесь хранятся данные о годах. Один элемент списка - один год
-        MonthlyReport monthlyReport = new MonthlyReport(); // В этом классе все методы, связанные с обработкой информации в месячных отчетах
-        YearlyReport yearlyReport = new YearlyReport(); // В этом классе все методы, связанные с обработкой информации в годовых отчетах
+        ReportEngine reportEngine = new ReportEngine();
+        Transaction transaction = new Transaction();
+        ArrayList<MonthlyReport> monthlyReports = new ArrayList<>(); // Здесь хранятся данные о месяцах. Один элемент списка - один месяц
+        ArrayList<YearlyReport> yearlyReports = new ArrayList<>(); // Здесь хранятся данные о годах. Один элемент списка - один год
         MonthTotalPerYear monthTotalPerYear = new MonthTotalPerYear();
         String[] months = monthTotalPerYear.getListMonths(); // С помощью этой структуры месяцы меняем только в одном месте - в классе MonthTotalPerYear
         String[] years = monthTotalPerYear.getListYears();
@@ -17,46 +17,50 @@ public class Main {
             printMenu();
             int userInput = scanner.nextInt();
             if (userInput == 1) {
-                monthTransactions.clear();
-                for (int i = 1; i <= monthTotalPerYear.getListMonths().length; i++) {
-                    Transaction transaction = new Transaction();
+                monthlyReports.clear(); // Очищаем список, чтобы информация была актуальной и не дублировалась
+                for (int i = 1; i <= months.length; i++) {
+                    MonthlyReport monthlyReport = new MonthlyReport(); // Создаем класс для определенного месяца
                     String fileName = "m.20210" + i + ".csv";
-                    if (transaction.addMonthDataFromFile(fileName)) {
+                    if (transaction.addMonthDataFromFile(fileName, monthlyReport)) { // Считываем файл, если да, то данные кладем в monthlyReport
                         System.out.println("Месяный отчет из файла " + fileName + " считан");
-                        // Добавили данные за очередной месяц в список
-                        monthTransactions.add(transaction);
+                        monthlyReports.add(monthlyReport); // Добавляем класс с данными за месяц в список
                     }
                     else
                         System.out.println("файл " + fileName + " не найден");
                 }
             } else if (userInput == 2) {
-                yearTransactions.clear();
-                for (int i = 1; i <= monthTotalPerYear.getListYears().length; i++) {
-                    Transaction transaction = new Transaction();
+                yearlyReports.clear(); // Очищаем список, чтобы информация была актуальной и не дублировалась
+                for (int i = 1; i <= months.length; i++) {
+                    YearlyReport yearlyReport = new YearlyReport(); // Создаем класс для определенного года
                     String fileName = "y.202" + i + ".csv";
-                    if (transaction.addYearDataFromFile(fileName)) {
+                    if (transaction.addYearDataFromFile(fileName, yearlyReport)) { // Считываем файл, если да, то данные кладе в yearlyReport
                         System.out.println("Годовой отчет из файла " + fileName + " считан");
-                        // Добавили данные за очередной год в список
-                        yearTransactions.add(transaction);
+                        yearlyReports.add(yearlyReport); // Добавляем класс с данными за год в список
                     }
                     else
                         System.out.println("файл " + fileName + " не найден");
                 }
             } else if (userInput == 3) {
-                if (monthTransactions.size() == 0 || yearTransactions.size() == 0)
+                if (monthlyReports.size() == 0 || yearlyReports.size() == 0)
                     System.out.println("Надо сначала считать месячные и годовые отчеты");
-                else
-                    printSverkaResult (monthTransactions, yearTransactions, monthlyReport, yearlyReport, months, years);
+                else {
+                    // printResultMonthByMonth (monthlyReports, months);
+                    int check = reportEngine.sverkaMonthYearReports (monthlyReports, yearlyReports);
+                    if (check != 0)
+                        System.out.println("Несоответствие данных выявлено в " + months[check - 1]);
+                    else
+                        System.out.println("Сверка прошла успешно");
+                }
             } else if (userInput == 4) {
-                if (monthTransactions.size() == 0)
+                if (monthlyReports.size() == 0)
                     System.out.println("Надо сначала считать месячные отчеты");
                 else
-                    printInfoAboutMonthReports (monthTransactions, monthlyReport, months);
+                    printInfoAboutMonthReports (monthlyReports, months);
             } else if (userInput == 5) {
-                if (yearTransactions.size() == 0)
+                if (yearlyReports.size() == 0)
                     System.out.println("Надо сначала считать годовые отчеты");
                 else
-                    printInfoAboutYearReports (yearTransactions, yearlyReport, months, years);
+                    printInfoAboutYearReports (yearlyReports, months, years);
             } else if (userInput == 6) {
                 System.out.println("Пока! Пока!");
                 scanner.close();
@@ -78,54 +82,36 @@ public class Main {
         System.out.println("6 - Выйти из приложения");
     }
 
-    static void printSverkaResult (ArrayList<Transaction> monthTransactions, ArrayList<Transaction> yearTransactions,
-                                   MonthlyReport monthlyReport, YearlyReport yearlyReport, String[] months, String[] years) {
-        for (int cntMonth = 0; cntMonth < monthTransactions.size(); cntMonth++) {
+    static void printResultMonthByMonth (ArrayList<MonthlyReport> monthlyReports, String[] months) {
+        for (int cntMonth = 0; cntMonth < monthlyReports.size(); cntMonth++) {
             System.out.println("Данные за " + months[cntMonth] + ":");
-            System.out.println("Суммарный доход: " + monthlyReport.getSumIncomeForMonth(monthTransactions.get(cntMonth)));
-            System.out.println("Общая сумма расходов: " + monthlyReport.getSumExpenseForMonth(monthTransactions.get(cntMonth)));
-        }
-        for (int cntYear = 0; cntYear < years.length; cntYear++) {
-            int check = checkData(monthTransactions, yearTransactions, monthlyReport, yearlyReport, cntYear);
-            if (check != 0)
-                System.out.println("Несоответствие данных выявлено в " + months[check - 1] + " " + years[cntYear] + " года");
+            System.out.println("Суммарный доход: " + monthlyReports.get(cntMonth).getSumIncomeForMonth());
+            System.out.println("Общая сумма расходов: " + monthlyReports.get(cntMonth).getSumExpenseForMonth());
         }
     }
 
-    static void printInfoAboutMonthReports (ArrayList<Transaction> monthTransactions, MonthlyReport monthlyReport, String[] months) {
-        for (int cntMonth = 0; cntMonth < monthTransactions.size(); cntMonth++) {
-            int bestIncome = monthlyReport.getBestIncomeMonthByMonth(monthTransactions.get(cntMonth));
-            String bestIncomeName = monthlyReport.getBestIncomeNameMonthByMonth(monthTransactions.get(cntMonth));
-            int biggestExpense = monthlyReport.getBiggestExpenseMonthByMonth(monthTransactions.get(cntMonth));
-            String biggestExpenseName = monthlyReport.getBiggestExpenseNameMonthByMonth(monthTransactions.get(cntMonth));
+    static void printInfoAboutMonthReports (ArrayList<MonthlyReport> monthlyReports, String[] months) {
+        for (int cntMonth = 0; cntMonth < monthlyReports.size(); cntMonth++) {
+            int bestIncome = monthlyReports.get(cntMonth).getBestIncomeForMonth();
+            String bestIncomeName = monthlyReports.get(cntMonth).getBestIncomeNameForMonth();
+            int biggestExpense = monthlyReports.get(cntMonth).getBiggestExpenseForMonth();
+            String biggestExpenseName = monthlyReports.get(cntMonth).getBiggestExpenseNameForMonth();
             System.out.println("Данные за " + months[cntMonth] + ":");
             System.out.println("Самый прибыльный товар: " + bestIncomeName + ". Продан за " + bestIncome + ".");
             System.out.println("Самая большая трата: " + biggestExpenseName + ". Потрачено " + biggestExpense + ".");
         }
     }
 
-    static void printInfoAboutYearReports (ArrayList<Transaction> yearTransactions, YearlyReport yearlyReport, String[] months, String[] years) {
-        for (int cntYear = 0; cntYear < yearTransactions.size(); cntYear++) {
-            double commonIncome = yearlyReport.getCommonIncomePerYear(yearTransactions.get(cntYear));
-            double commonExpense = yearlyReport.getCommonExpensePerYear(yearTransactions.get(cntYear));
+    static void printInfoAboutYearReports (ArrayList<YearlyReport> yearlyReports, String[] months, String[] years) {
+        for (int cntYear = 0; cntYear < yearlyReports.size(); cntYear++) {
+            double commonIncome = yearlyReports.get(cntYear).getCommonIncomePerYear();
+            double commonExpense = yearlyReports.get(cntYear).getCommonExpensePerYear();
             System.out.println("Данные за " + months.length + " месяца " + years[cntYear] + " года:");
             for (int cntMonth = 0; cntMonth < months.length; cntMonth++) {
-                System.out.println("Прибыль за " + months[cntMonth] + " составляет " + yearlyReport.getIncomePerMonth(yearTransactions.get(cntYear), cntMonth+1));
+                System.out.println("Прибыль за " + months[cntMonth] + " составляет " + yearlyReports.get(cntYear).getIncomePerMonth(cntMonth+1));
             }
             System.out.println("Cредний расход за все имеющиеся операции в " + years[cntYear] + " году: " + (commonExpense/months.length));
             System.out.println("Cредний доход  за все имеющиеся операции в " + years[cntYear] + " году: " + (commonIncome/months.length));
         }
     }
-    static int checkData (ArrayList<Transaction> monthTransactions, ArrayList<Transaction> yearTransactions, MonthlyReport monthlyReport, YearlyReport yearlyReport, int cntYear) {
-        for (int cntMonth = 0; cntMonth < monthTransactions.size(); cntMonth++) {
-            int incomeInMonthReport = monthlyReport.getSumIncomeForMonth(monthTransactions.get(cntMonth));
-            int incomeInYearReport = yearlyReport.getIncomePerMonth(yearTransactions.get(cntYear), cntMonth+1);
-            int expenseInMonthReport = monthlyReport.getSumExpenseForMonth(monthTransactions.get(cntMonth));
-            int expenseInYearReport = yearlyReport.getExpensePerMonth(yearTransactions.get(cntYear),cntMonth+1) ;
-            if (incomeInMonthReport != incomeInYearReport || expenseInMonthReport != expenseInYearReport)
-                return cntMonth + 1;
-        }
-        return 0;
-    }
-
 }
