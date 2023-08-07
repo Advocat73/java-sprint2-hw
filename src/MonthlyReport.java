@@ -5,7 +5,6 @@ public class MonthlyReport {
     int[] quantity;
     int[] unitPrice;
     int countRecords = 0; // Мы должны знать количество записей в массивах
-
     int getBestIncomeForMonth () {
         int bestIncome = 0;
         for (int i = 0; i < countRecords; i++) {

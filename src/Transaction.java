@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-
 public class Transaction {
     public boolean addMonthDataFromFile (String fileName, MonthlyReport monthlyReport) {
         FileReader fileReader = new FileReader();

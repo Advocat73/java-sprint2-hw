@@ -5,7 +5,6 @@ public class ReportEngine {
     MonthTotalPerYear monthTotalPerYear;
     String[] years;
     String[] months;
-
     ReportEngine() {
         monthTotalPerYear = new MonthTotalPerYear();
         years = monthTotalPerYear.getListYears();

@@ -2,7 +2,6 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Main {
-
     public static void main(String[] args) {
         ReportEngine reportEngine = new ReportEngine();
         Transaction transaction = new Transaction();
