@@ -5,3 +5,5 @@ month,amount,is_expense
 02,14000,true
 03,90000,true
 03,2430000,false
+04,590000,true
+04,1992100,false

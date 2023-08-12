@@ -1,0 +1,7 @@
+item_name,is_expense,quantity,unit_price
+Лыжи,TRUE,70,2000
+Просто ёлка,TRUE,2,100000
+Ларёк с чаем,TRUE,5,50000
+Аренда лыж,FALSE,1000,250
+Продажа бубликов,FALSE,5000,300
+Продажа чая,FALSE,2421,100

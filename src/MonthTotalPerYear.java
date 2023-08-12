@@ -1,8 +1,8 @@
 public class MonthTotalPerYear {
-    String[] months;
-    String[] years;
+    private String[] months;
+    private String[] years;
     MonthTotalPerYear () {
-        months = new String[] {"Янваарь", "Февраль", "Март"};
+        months = new String[] {"Янваарь", "Февраль", "Март", "Апрель"};
         years = new String[] {"2021"};
     }
 

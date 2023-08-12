@@ -1,64 +1,80 @@
+import java.util.ArrayList;
+
 public class MonthlyReport {
-    // Все данные месяца лежат в определенных массивах, т.к. операций в течении месяца много
-    String[] name;
-    boolean[] isExpense;
-    int[] quantity;
-    int[] unitPrice;
-    int countRecords = 0; // Мы должны знать количество записей в массивах
-    int getBestIncomeForMonth () {
+    private ArrayList<String> name;
+    private ArrayList<Boolean> isExpense;
+    private ArrayList<Integer> quantity;
+    private ArrayList<Integer> unitPrice;
+    private int countRecords;
+
+    MonthlyReport () {
+        name = new ArrayList<>();
+        isExpense = new ArrayList<>();
+        quantity = new ArrayList<>();
+        unitPrice = new ArrayList<>();
+        countRecords = 0;
+    }
+    void addMonthData (String name, boolean isExpense, int quantity, int unitPrice) {
+            this.name.add(name);
+            this.isExpense.add(isExpense);
+            this.quantity.add(quantity);
+            this.unitPrice.add(unitPrice);
+            countRecords++;
+    }
+    int getBestIncome () {
         int bestIncome = 0;
         for (int i = 0; i < countRecords; i++) {
-            if (!isExpense[i] && (quantity[i]*unitPrice[i]) > bestIncome)
-                bestIncome = (quantity[i]*unitPrice[i]);
+            if (!isExpense.get(i) && (quantity.get(i)*unitPrice.get(i) > bestIncome))
+                bestIncome = quantity.get(i)*unitPrice.get(i);
         }
-            return bestIncome;
+        return bestIncome;
     }
-    String getBestIncomeNameForMonth () {
+    String getBestIncomeName () {
         String bestIncomeName = "";
         int bestIncome = 0;
         for (int i = 0; i < countRecords; i++) {
-            if (!isExpense[i] && (quantity[i]*unitPrice[i]) > bestIncome) {
-                bestIncome = (quantity[i]*unitPrice[i]);
-                bestIncomeName = name[i];
+            if (!isExpense.get(i) && (quantity.get(i)*unitPrice.get(i)) > bestIncome) {
+                bestIncome = (quantity.get(i)*unitPrice.get(i));
+                bestIncomeName = name.get(i);
             }
         }
         return bestIncomeName;
     }
-    int getBiggestExpenseForMonth() {
+    int getBiggestExpense() {
         int biggestExpense = 0;
 
         for (int i = 0; i < countRecords; i++) {
-            if (isExpense[i] && (quantity[i]*unitPrice[i]) > biggestExpense) {
-                biggestExpense = (quantity[i]*unitPrice[i]);
+            if (isExpense.get(i) && (quantity.get(i)*unitPrice.get(i)) > biggestExpense) {
+                biggestExpense = (quantity.get(i)*unitPrice.get(i));
             }
         }
         return biggestExpense;
     }
-    String getBiggestExpenseNameForMonth() {
+    String getBiggestExpenseName() {
         int biggestExpense = 0;
         String biggestExpenseName = "";
         for (int i = 0; i < countRecords; i++) {
-            if (isExpense[i] && (quantity[i]*unitPrice[i]) > biggestExpense) {
-                biggestExpense = (quantity[i]*unitPrice[i]);
-                biggestExpenseName = name[i];
+            if (isExpense.get(i) && (quantity.get(i)*unitPrice.get(i)) > biggestExpense) {
+                biggestExpense = (quantity.get(i)*unitPrice.get(i));
+                biggestExpenseName = name.get(i);
             }
         }
         return biggestExpenseName;
     }
-    int getSumIncomeForMonth () {
+    int getSumIncome () {
         int sumIncome = 0;
         for (int i = 0; i < countRecords; i++) {
-            if (!isExpense[i]) {
-                sumIncome += quantity[i]*unitPrice[i];
+            if (!isExpense.get(i)) {
+                sumIncome += quantity.get(i)*unitPrice.get(i);
             }
         }
         return sumIncome;
     }
-    int getSumExpenseForMonth () {
+    int getSumExpense () {
         int sumExpense = 0;
         for (int i = 0; i < countRecords; i++) {
-            if (isExpense[i]) {
-                sumExpense += quantity[i]*unitPrice[i];
+            if (isExpense.get(i)) {
+                sumExpense += quantity.get(i)*unitPrice.get(i);
             }
         }
         return sumExpense;

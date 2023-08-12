@@ -3,21 +3,15 @@ public class Transaction {
     public boolean addMonthDataFromFile (String fileName, MonthlyReport monthlyReport) {
         FileReader fileReader = new FileReader();
         ArrayList<String> list = fileReader.readFileContents(fileName);
-        if (list != null) {
-            // Создаем соответствующие массивы известного размера
-            monthlyReport.name = new String[list.size()];
-            monthlyReport.isExpense = new boolean[list.size()];
-            monthlyReport.quantity = new int[list.size()];
-            monthlyReport.unitPrice = new int[list.size()];
-            // Заполняем массивы
+        if (!list.isEmpty()) {
+            // Построчно даем данные
             for (int i = 1; i < list.size(); i++) {
                 String line = list.get(i);
                 String[] lineContents = line.split(",");
-                monthlyReport.name[i-1] = lineContents[0];
-                monthlyReport.isExpense[i-1] = Boolean.parseBoolean(lineContents[1]);
-                monthlyReport.quantity[i-1] = Integer.parseInt(lineContents[2]);
-                monthlyReport.unitPrice[i-1] = Integer.parseInt(lineContents[3]);
-                monthlyReport.countRecords++;
+                monthlyReport.addMonthData( lineContents[0],
+                                            Boolean.parseBoolean(lineContents[1]),
+                                            Integer.parseInt(lineContents[2]),
+                                            Integer.parseInt(lineContents[3]));
             }
             return true;
         } else
@@ -26,19 +20,14 @@ public class Transaction {
     public boolean addYearDataFromFile (String fileName, YearlyReport yearlyReport) {
         FileReader fileReader = new FileReader();
         ArrayList<String> list = fileReader.readFileContents(fileName);
-        if (list != null) {
-            // Создаем соответствующие массивы известного размера
-            yearlyReport.monthIndexInYearReport = new int[list.size()];
-            yearlyReport.monthResultInYearReport = new int[list.size()];
-            yearlyReport.isExpenseInYearReport = new boolean[list.size()];
-            // Заполняем массивы
+        if (!list.isEmpty()) {
+            // Построчно даем данные
             for (int i = 1; i < list.size(); i++) {
                 String line = list.get(i);
                 String[] lineContents = line.split(",");
-                yearlyReport.monthIndexInYearReport[i-1] = Integer.parseInt(lineContents[0]);
-                yearlyReport.monthResultInYearReport[i-1] = Integer.parseInt(lineContents[1]);
-                yearlyReport.isExpenseInYearReport[i-1] = Boolean.parseBoolean(lineContents[2]);
-                yearlyReport.countRecords++;
+                yearlyReport.addYearData (  Integer.parseInt(lineContents[0]),
+                                            Integer.parseInt(lineContents[1]),
+                                            Boolean.parseBoolean(lineContents[2]));
             }
             return true;
         } else
