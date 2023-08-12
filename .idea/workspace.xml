@@ -5,15 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="720cfa7e-0f9c-41af-99cf-b62c984bd5da" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/m.202103.csv" beforeDir="false" afterPath="$PROJECT_DIR$/resources/m.202103.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/y.2021.csv" beforeDir="false" afterPath="$PROJECT_DIR$/resources/y.2021.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MonthTotalPerYear.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MonthTotalPerYear.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MonthlyReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MonthlyReport.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ReportEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReportEngine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Transaction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/YearlyReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/YearlyReport.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,5 +50,16 @@
       <updated>1691221734273</updated>
     </task>
     <servers />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Main.java</url>
+          <line>31</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

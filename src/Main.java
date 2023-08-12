@@ -29,16 +29,11 @@ public class Main {
                 }
             } else if (userInput == 2) {
                 reportEngine.yearDataClear ();
-                for (int i = 21; i < years.length; i++) {
-                    String fileName = "y.20" + i + ".csv";
-                    if (reportEngine.addYearDataFromFile(fileName))
-                        System.out.println("Годовой отчет из файла " + fileName + " считан");
-                    else {
-                        System.out.println("Файл " + fileName + " не найден");
-                        reportEngine.yearDataClear();
-                        break;
-                    }
-                }
+                String fileName = "y.2021.csv";
+                if (reportEngine.addYearDataFromFile(fileName))
+                    System.out.println("Годовой отчет из файла " + fileName + " считан");
+                else
+                    System.out.println("Файл " + fileName + " не найден");
             } else if (userInput == 3) {
                 if (reportEngine.monthsDataSize() == 0 || reportEngine.yearsDataSize() == 0) // Не считали месячные или годовые отчеты
                     System.out.println("Надо сначала считать месячные и годовые отчеты");
